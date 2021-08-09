@@ -3,9 +3,10 @@
 {% block content %}
 <div class="container" id="filteredProducts">
     <div class="row">
-        <H1>Blogs</H1>
+        {% if blogpost_list %}
+        <h1 style="margin-top: 20px;">Blogs</h1>
         {% for blog in blogpost_list %}
-            {% if blog.is_published %}
+        {% if blog.is_published %}
             <div class="col-sm-4" style="padding-top: 15px;">
                 <div class="l-blog-text">
                     <div class="banner"><a href="{{blog.get_absolute_url}}"><img src="{{blog.image.url}}" alt="" /></a></div>
@@ -22,8 +23,10 @@
             </div>
             {% endif %}
         {% endfor %}
+        {% endif %}
     </div>
-    <h1>Products</h1>
+    {% if product_list %}
+    <h1 style="margin-top: 20px;">Products</h1>
     {% for product in product_list %}
     {% if product.is_published %}
     <div class="tab-pane fade active in" id="list">
@@ -68,11 +71,7 @@
                             {% endif %}
                             <p>{{product.content|truncatechars:100}}</p>
                             <div class="list-btn">
-                                <form action="GET">
-                                    <input type="submit" name="clicked" id="addtoCart"
-                                        onclick="addToCart({{product.id}})" value="Add To Cart"
-                                        data-product={{product.id}} data-action="add">
-                                </form>
+                                <a href="#">Add to cart</a>
                                 <a href="#">wishlist</a>
                                 <a href="#" data-toggle="modal"
                                     data-target="#{{product.id}}">zoom</a>
@@ -89,6 +88,7 @@
     </div>
     {% endif %}
     {% endfor %}
+    {% endif %}
 </div>
 {%endblock%}
 {% block js %}
@@ -139,7 +139,6 @@
 			return false;
 		}
 	});
-
 	});
 
 	

@@ -43,12 +43,10 @@
                         {% endif %}
                         <p>{{product.content|truncatechars:100}}</p>
                         <div class="list-btn">
-                            <form action="GET">
-                                <input type="submit" name="clicked" id="addtoCart" onclick="addToCart({{product.id}})" value="Add To Cart">
-                            </form>
+                            <a href="#">Add to cart</a>
                             <a href="#">wishlist</a>
                             <a href="#" data-toggle="modal"
-                                data-target="#{{product.id}}">zoom</a>
+                                    data-target="#{{product.id}}">zoom</a>
                         </div>
                     </div>
                 </div>

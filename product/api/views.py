@@ -164,7 +164,7 @@ class WishlistItemAPIView(APIView):
 
     def get(self, *args, **kwargs):
         item = Wishlist.objects.filter(product=kwargs.get('pk')).first()
-        print(item)
+        
         if not item:
             raise Http404
         serializer = WishlistListSerializer(

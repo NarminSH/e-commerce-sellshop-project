@@ -221,13 +221,6 @@ class Wishlist(models.Model):
 
     color = models.CharField(max_length=10, blank=True, null=True)
     size = models.CharField(max_length=6, blank=True, null=True)
-    # billing_address = models.ForeignKey('BillingAddress',on_delete=models.SET_NULL,blank=True,null=True)
-    # quantity = models.IntegerField(default=1)
-    # product_color = models.CharField(max_length=40, blank=True, null=True)
-    # product_title = models.CharField(max_length=30, blank=True, null=True)
-    # product_size = models.CharField(max_length=8, blank=True, null=True)
-    # product_image = models.CharField(max_length=250, blank=True, null=True)
-    # product_price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -250,3 +243,4 @@ class BillingAddress(models.Model):
     company_name = models.CharField(max_length=40)   
 
     
+ 

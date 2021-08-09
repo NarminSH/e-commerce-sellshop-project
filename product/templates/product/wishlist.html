@@ -42,8 +42,8 @@
 											<a href="#"><img src="{{item.product.cover_image.url}}" alt="Add Product" /></a>
 											<div class="items-dsc">
 												<h5><a href="#">{{item.product.title}}</a></h5>
-												<p class="itemcolor">Color : <span><div style="margin-left: 160px; margin-top: -20px; height: 20px; width: 20px; background-color:{{color_title}};"></div></span></p>
-												<p class="itemcolor">Size   : <span>{{product_option}}</span></p>
+												<p  class="itemcolor">Color : <span><div style="margin-left: 160px; margin-top: -20px; height: 20px; width: 20px; background-color:{{color_title}};"></div></span></p>
+												<p class="itemcolor">Size   : <span id="pickedsize" >{{product_option}}</span></p>
 											</div>
 										</td>
 										<td>$ {{item.product.get_final_price}}</td>

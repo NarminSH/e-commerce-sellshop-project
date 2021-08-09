@@ -88,9 +88,9 @@
 									{% if product.discount_price %}
 									<h5><del class="product-price">{{product.price}} $</del> {{product.get_final_price}} $</h5>
 									{% else %}
-									<h4 id="product-price">{{product.price}} </h4>
+									<h4 id="product-price">{{product.price}} $</h4>
 									{% endif %}
-									<p>{{product.content|truncatechars:140}}</p>
+									<p>{{product.content|truncatewords:100}}</p>
 									<div class="all-choose">
 										<div class="s-shoose">
 											<h5>Color</h5>
@@ -125,7 +125,7 @@
 											<form action="#" method="POST">
 												<div class="plus-minus">
 													<a class="dec qtybutton">-</a>
-													<input type="text" value="02" name="qtybutton" class="plus-minus-box" id="product-quantity">
+													<input type="text" value="1" name="qtybutton" class="plus-minus-box" id="product-quantity">
 													<a class="inc qtybutton">+</a>
 												</div>
 											</form>
@@ -295,10 +295,8 @@
 									<div class="custom-input">
 										<form action="" method="POST">
 											<div class="row">
-												{% csrf_token %}
-												
+												{% csrf_token %}				
 														{{ form.rate }}
-												
 												<div class="col-sm-6">
 													<div class="input-mail">
 														{{ form.name }}

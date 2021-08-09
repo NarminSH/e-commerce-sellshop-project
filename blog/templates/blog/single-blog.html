@@ -47,16 +47,16 @@
 												<button type="submit" name="blog_id" value="{{blog.id}}" class="btn btn-danger btn-sm"> Like </button>
 												{% endif %}
 											{% else %}
-												<a href="{% url 'users-login' %}">Sign in to like</a>
+												<a href="{% url 'users-login' %}?next={{ request.path|urlencode }}">Sign in to like</a>
 											{% endif %}
 											</form>
 										</ul>
 									</div>
-									<p>{{blog.content|truncatechars:100}}</p>
+									<p>{{blog.content|slice:":400"}}</p>
 									<div class="italic">
-										<p>{{blog.content|truncatechars:100}}</p>
+										<p>{{blog.content|slice:"400:600"}}</p>
 									</div>
-									<p>{{blog.content|truncatechars:100}}</p>
+									<p>{{blog.content|slice:"600:"}}</p>
 									<div class="share-tag clearfix">
 										<ul class="blog-share floatleft">
 											<li><h5>share </h5></li>
@@ -123,7 +123,7 @@
 													<input type="hidden" name="reply_id" value="{{ comment.id }}">
 													<button type="submit" value="submit form">submit comments</button>
 													{% else %}
-													<a href="{% url 'users-login' %}">You have to log in to comment</a>
+													<a href="{% url 'users-login' %}?next={{ request.path|urlencode }}">You have to log in to comment</a>
 													{% endif %}
 												</div>
 											</div>
@@ -136,67 +136,18 @@
 					</div>
 						
 					<div class="col-xs-12 col-sm-4 col-md-3">
-						<div class="sidebar left-sidebar">
 							<div class="s-side-text">
 								<div class="sidebar-title clearfix">
-									<h4 class="floatleft">Categories</h4>
-									<h5 class="floatright"><a href="#">All</a></h5>
-								</div>
-								{% get_categories as categories %}
-								{% for cat in categories%}
-								<div class="categories left-right-p">
-									<ul id="accordion" class="panel-group clearfix">
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{cat.id}}">
-												<div class="medium-a">
-													{{cat.title}}
-												</div>
-											</div>
-											<div class="panel-collapse collapse in" id="collapse{{cat.id}}">
-												{% for parent_cat in cat.parent_category.all%}
-												<div class="normal-a">
-													<a href="">{{parent_cat.title}}</a>
-												</div>
-												{% endfor %}
-											</div>
-										</li>
-									</ul>
-								</div>
-								{% endfor %}
-							</div>
-							{% get_properties as properties%}
-							{% for property in properties%}
-							<div class="s-side-text">
-								<div class="sidebar-title clearfix">
-									<h4 class="floatleft">{{property.title}}</h4>
-									<h5 class="floatright"><a href="#">All</a></h5>
-								</div>
-								<div class="sizes-select clearfix" >
-									<ul >
-										<li >
-												
-											{% for propertiyoption in property.options.all%}
-											<a href="#" style="border: 1px solid black;" >{{propertiyoption.title}}</a>
-												
-											{% endfor %}
-												
-										</li>
-									</ul>
-								</div>
-							</div>
-							{% endfor %}
-							<div class="s-side-text">
-								<div class="sidebar-title clearfix">
-									<h4 class="floatleft">recent post</h4>
+									<h4 class="floatleft">recent posts</h4>
 								</div>
 								<div class="recent-post clearfix">
 									<ul>
-										{% for recentpost in recent_posts%}
+										{% for recentpost in recent_posts %}
 										{% if recentpost.is_published %}
 										<li>
-												<a href="#"><img src="{{ recentpost.image.url }}" alt="" /></a>
-											<h5><a href="#">{{recentpost.title}}</a></h5>
-											<span>{{recentpost.created_at}}</span>
+											<a href="{{recentpost.get_absolute_url}}"><img src="{{ recentpost.image.url }}" alt="" /></a>
+											<p style="margin-left: 25px;"><a href="{{recentpost.get_absolute_url}}">{{recentpost.title}}</a></p>
+											<span style="margin-left: 25px;">{{recentpost.created_at}}</span>
 										</li>
 										{% endif %}
 										{% endfor %}
@@ -205,7 +156,7 @@
 							</div>
 							<div class="s-side-text">
 								<div class="banner clearfix">
-									<a href="#"><img src="{% static 'img/products/banner.jpg' %}" alt="" /></a>
+									<a href="#"><img src="{% static 'img/products/bestbrand4.jpeg' %}" alt="" /></a>
 									<div class="banner-text">
 										<h2>best</h2> <br />
 										<h2 class="banner-brand">brand</h2>
@@ -224,7 +175,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="section-title text-center">
-							<h2>Related Post</h2>
+							<h2>Related Posts</h2>
 						</div>
 					</div>
 				</div>
@@ -232,12 +183,12 @@
 					<li>
 						<div class="row">
 							{% for relatedblog in related_blogs %}
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<div class="l-blog-text">
 									<div class="banner"><a href="{{relatedblog.get_absolute_url}}"><img src="{{relatedblog.image.url}}" alt="" /></a></div>
 									<div class="s-blog-text">
 										<h4><a href="{{relatedblog.get_absolute_url}}">{{ relatedblog.title }}</a></h4>
-										<span>By : <a href="#">{{relatedblog.author}}</a> | <a href="#">like:{{relatedblog.like.count}}</a> | <a href="#">comment:{{relatedblog.comments.count}}</a></span>
+										<span>By : <a href="{{relatedblog.get_absolute_url}}">{{relatedblog.author}}</a> | <a href="#">like:{{relatedblog.like.count}}</a> | <a href="#">comment:{{relatedblog.comments.count}}</a></span>
 										<p>{{ relatedblog.content|truncatechars:100}}</p>
 									</div>
 									<div class="date-read clearfix">

@@ -31,7 +31,8 @@ def filter_data(request):
     
     size = request.GET.getlist('Size[]')
     brand = request.GET.getlist('Brand[]')
-    # color = request.GET.getlist('Color[]')
+    color = request.GET.getlist('Color[]')
+    category = request.GET.getlist('Category[]')
     minPrice = request.GET['minPrice']
     maxPrice = request.GET['maxPrice']
     allproducts = Product.objects.all().order_by('-id')
@@ -41,8 +42,10 @@ def filter_data(request):
     	allproducts=allproducts.filter(properity_options__in=size).distinct()
     if len(brand)>0:
         allproducts=allproducts.filter(properity_options__in=brand).distinct()
-    # if len(color)>0:
-    #     allproducts=allproducts.filter(color__in=color).distinct()
+    if len(color)>0:
+        allproducts=allproducts.filter(color__in=color).distinct()
+    if len(category)>0:
+        allproducts=allproducts.filter(category__in=category).distinct()
     t = render_to_string('product/products.html',{'data':allproducts})
     return JsonResponse({'data':t})
 
@@ -89,19 +92,14 @@ class CheckoutView(View):
 
 class ProductView(ListView):
     model = Product
-    paginate_by=2
+    paginate_by=4
     template_name = 'product/product-list.html'
     def get_context_data(self, **kwargs):
         minMaxPrice = self.model.objects.aggregate(Min('price'),Max('price'))
         context = super(ProductView, self).get_context_data(**kwargs)
-        # data = self.model.objects.all()
         category_colors = Color.objects.all()
-        # paginator = Paginator(data,per_page=2)
-        # page_number = paginator.page(2)
-        # data = paginator.get_page(page_number)
         minMaxPrice['price__min']=int(minMaxPrice['price__min'])
         minMaxPrice['price__max']=int(minMaxPrice['price__max'])
-        # context['data'] = data
         context["category_colors"] = category_colors
         context['minMaxPrice'] = minMaxPrice
         return context

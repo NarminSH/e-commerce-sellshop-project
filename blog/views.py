@@ -1,13 +1,10 @@
-from django.db.models.fields import DateField
-from django.views.generic.base import TemplateView
 from blog.forms import CommentForm
 from django.shortcuts import redirect, render, get_object_or_404   
-from django.http import HttpResponseRedirect
 from django.db.models import Q
 from blog.models import *
 from product.models import *
 from django.views.generic.edit import FormMixin
-from django.views.generic import DetailView,ListView, CreateView
+from django.views.generic import DetailView,ListView
 
 
 
@@ -15,6 +12,7 @@ class BlogsView(ListView):
     model = BlogPost
     template_name = 'blog/blog.html'
     paginate_by = 6
+
 
 class BlogDetailView(FormMixin, DetailView):
     model = BlogPost
@@ -64,7 +62,7 @@ class BlogDetailView(FormMixin, DetailView):
                     Comment(content=content, parent_comment = reply_obj, blog=blog, user=user).save()
             else: 
                 Comment(content=content, blog=blog, user=user).save()
-            return redirect(f'/single-blog/{self.object.slug}')
+            return redirect(f'/blogs/single-blog/{self.object.slug}')
         else:
             return self.form_invalid(form)
 
@@ -74,8 +72,6 @@ class BlogDetailView(FormMixin, DetailView):
         form.instance.blog = self.get_object()
         form.save()
         return super().form_valid(form)
-
-
 
 
 
@@ -92,5 +88,4 @@ def like(request, slug):
 
 
 
-class AboutView(TemplateView):
-    template_name = 'blog/about.html'
+

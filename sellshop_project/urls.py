@@ -34,8 +34,8 @@ urlpatterns = [
 
 
 urlpatterns += i18n_patterns(
-    path('', include('blog.urls')),
-    path('product/', include('product.urls')),
-    path('core/', include('core.urls')),
+    path('blogs/', include('blog.urls')),
+    path('products/', include('product.urls')),
+    path('', include('core.urls')),
     path('users/', include('users.urls')),
 )

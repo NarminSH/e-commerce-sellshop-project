@@ -1,9 +1,9 @@
 from django.db.models.fields import EmailField
 from django.http import request
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls.base import reverse_lazy
 from django.views.generic.base import RedirectView, TemplateView
-from django.views.generic.edit import UpdateView
 from users.forms import CheckoutForm, CustomChangePasswordForm, LoginForm,  RegistrationForm, CustomPasswordResetForm, CustomSetPasswordForm
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib import messages
@@ -90,7 +90,11 @@ class SignupLoginView(CreateView):
                 if user:
                     django_login(request, user)
                     messages.success(request, 'You are logged in!')
-                    return redirect(reverse_lazy('blogs'))
+                    print(request.POST.get('next'))
+                    if request.POST.get('next') != '':  #if user redirected to login page through some page
+                        next = request.POST.get('next')
+                        return HttpResponseRedirect(next)
+                    return redirect('index')
                 else:
                     messages.error(request, 'Sorry, invalid username or password. Please, double-check your credentials')
                     return redirect(reverse_lazy('users-login'))
@@ -115,6 +119,7 @@ def activate(request, uidb64, token):
 
 
 
+
 class MyAccountView(CreateView):
     form_class = CheckoutForm
     template_name = 'users/my-account.html'
@@ -130,10 +135,13 @@ class MyAccountView(CreateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
+
+
 def logout(request):
     django_logout(request)
     messages.success(request, 'You are logged out')
     return redirect(reverse_lazy('blogs'))
+
 
 
 

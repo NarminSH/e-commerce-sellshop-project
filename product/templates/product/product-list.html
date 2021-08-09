@@ -70,19 +70,19 @@
 								<li class="panel">
 									<div data-toggle="collapse" data-parent="#accordion"
 										data-target="#collapse{{cat.id}}">
-										<div class="medium-a" id="cat">
-											
+										<div class="medium-a">
+											<input type="checkbox" class="filters" data-filter="Category" value="{{cat.id}}">
 											{{cat.title}}
 										</div>
 									</div>
 									<div class="panel-collapse collapse in" id="collapse{{cat.id}}">
-										<div class="normal-a">
-											{% for subcat in cat.parent_category.all%}
-											
-											<a href="#" id="subcat">{{subcat.title}}</a>
+										{% for subcat in cat.parent_category.all%}
+										<div class="normal-a" style="margin-left: 5rem;">
+											<input type="checkbox" class="filters" data-filter="Category" value="{{subcat.id}}">
+											{{subcat.title}}
 
-											{% endfor %}
 										</div>
+										{% endfor %}
 									</div>
 								</li>
 								{% endfor %}
@@ -104,18 +104,18 @@
 							<button id="priceFilterBtn" class="btn btn-secondary btn-sm">Filter</button>
 						</div>
 					</div>
-					<div class="s-side-text">
-						<div class="sidebar-title clearfix">
+					<div class="s-side-text" style="padding-bottom: 2rem;">
+						<div class="sidebar-title clearfix" style="margin-bottom: 2rem;">
 							<h4 class="floatleft">color</h4>
-							<h5 class="floatright"><a href="#">All</a></h5>
-						</div>
-						<div class="color-select clearfix">
-							{% for color in category_colors %}
-							<!-- <input type="checkbox" class="filters" data-filter="Color" value="{{color.id}}"> -->
 							
-							<span style="background-color:{{color}}"></span>
-							{% endfor %}
 						</div>
+						
+						{% for color in category_colors %}
+						
+								<input type="checkbox" class="filters" data-filter="Color" value="{{color.id}}">
+								<span style="display: inline-block;height: 20px;width: 20px; background-color:{{color}}"></span>
+						
+						{% endfor %}
 					</div>
 					{% get_properties as properties%}
 					{% for property in properties%}
@@ -124,13 +124,13 @@
 							<h4 class="floatleft">{{property.title}}</h4>
 							<h5 class="floatright"><a href="#">All</a></h5>
 						</div>
-						<div class="size-select clearfix">
+						<div class="size-select clearfix" >
 							
-							<ul>
+							<ul style="padding-top: 2rem;padding-bottom: 4rem;">
 								<li>
 									{% for propertioption in property.options.all%}
 										<input type="checkbox" class="filters" data-filter="{{property.title}}" value="{{propertioption.id}}">
-										<button class=" btn" style="border: 1px solid black;">{{propertioption.title}}</button>
+										<span  style="border: 1px solid black;padding: 4px;">{{propertioption.title}}</span>
 									{% endfor %}
 								</li>
 							</ul>
@@ -162,7 +162,7 @@
 									</li>
 									<li class="sort-by floatright">
 										
-										Showing {{page_obj.paginator.num_pages}} of {{page_obj.paginator.count}} Results
+										Showing 4 of {{page_obj.paginator.count}} Results
 										
 									</li>
 								</ul>
@@ -183,7 +183,6 @@
 											<a href="{{product.get_absolute_url}}"><img src="{{product.cover_image.url}}"
 													alt="Product Title" /></a>
 											<div class="actions-btn">
-												
 												<a href="#"><i class="mdi mdi-cart"></i></a>
 												<a href="#" data-toggle="modal" data-target="#{{product.id}}"><i
 														class="mdi mdi-eye"></i></a>
@@ -278,9 +277,6 @@
 											</div>
 										</div>
 										<!-- single product end -->
-	
-	
-	
 									</div>
 									{% endif %}
 									{% endfor %}
@@ -465,7 +461,7 @@
 													</div>
 												</div>
 												<div class="list-btn">
-													<input type="submit"  id="addtoCart" onclick="addToCart({{product.id}})" value="Add To Cart" >
+													<a href="#">Add to cart</a>
 													<a href="#">wishlist</a>
 												</div>
 												<div class="share-tag clearfix">
@@ -498,58 +494,9 @@
 <!-- footer section start -->
 {% endblock %}
 
+
+
 {% block js %}
-<script>
-	$(document).ready(function () {
-		$(".ajaxLoader").hide();
-		$(".filters,#priceFilterBtn").on('click', function () {
-			var _filterObj = {};
-			var _minPrice = $('#maxPrice').attr('min');
-			var _maxPrice = $('#maxPrice').val();
-			_filterObj.minPrice=_minPrice;
-			_filterObj.maxPrice=_maxPrice;
-			$(".filters").each(function (index, ele) {
-				var _filterVal = $(this).val();
-				var _filterKey = $(this).data('filter');
-				// console.log(_filterKey,_filterVal)
-				_filterObj[_filterKey]=Array.from(document.querySelectorAll('input[data-filter='+_filterKey+']:checked')).map(function(el){
-					return el.value;
-				});
-			});
-			console.log(_filterObj);
-			$.ajax({
-				url:'/product/filter-data',
-				data:_filterObj,
-				dataType:'json',
-				beforeSend:function(){
-					$(".ajaxLoader").show();
-				},
-				success:function(res){
-					$("#filteredProducts").html(res.data);
-					// $("#filteredProducts1").html(res.data);
-					
-					$(".ajaxLoader").hide();
-				}
-					
-			});
-		});
-		$("#maxPrice").on('blur',function(){
-		var _min=$(this).attr('min');
-		var _max=$(this).attr('max');
-		var _value=$(this).val();
-		console.log(_value,_min,_max);
-		if(_value < parseInt(_min) || _value > parseInt(_max)){
-			alert('Values should be '+_min+'-'+_max);
-			$(this).val(_min);
-			$(this).focus();
-			$("#rangeInput").val(_min);
-			return false;
-		}
-	});
-
-	});
-
-	
-</script>
-
+<!-- to filter products on products page -->
+<script src="{% static 'js/filtering.js' %}"></script>
 {% endblock %}

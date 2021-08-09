@@ -20,7 +20,7 @@
                                     <form action="{% url 'set_language' %}" method="post">
                                         {% csrf_token %}
                                         <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
-                                        <ul class="nav navbar-nav navbar-right language menu">
+                                        <ul style="margin-top: 10px;" class="nav navbar-nav navbar-right language menu">
                                         {% get_current_language as LANGUAGE_CODE %}
                                         {% get_available_languages as LANGUAGES %}
                                         {% get_language_info_list for LANGUAGES as languages %}
@@ -46,7 +46,7 @@
                                     {% if user.is_authenticated %}
                                     <a href="#">{{user.username}}</a>
                                     {% else %}
-                                    <a href="#"><i class="mdi mdi-account"></i></a>
+                                    <a href="{% url 'users-login' %}"><i class="mdi mdi-account"></i></a>
                                     {% endif %}
                                     <ul>
                                         {% if user.is_authenticated %}
@@ -69,12 +69,10 @@
                                     </ul>
                                     {% endif %}
                                 </li>
-                                
-                                
                             </ul>
                             
                             <div class="right floatright">
-                                <form action="/product/searchs" onsubmit="return sendRequest();" method="get">
+                                <form action="/products/searchs" onsubmit="return sendRequest();" method="get">
                                     <button type="submit"><i class="mdi mdi-magnify"></i></button>
                                     <input type="text" name="search"  placeholder="Search within these results..." />
                                 </form>
@@ -98,52 +96,21 @@
                         <div class="mainmenu">
                             <nav>
                                 <ul>
-                                    <li><a href="{% url 'index'%}">{% trans "Home" %}</a>
-                                        <ul class="dropdown">
-                                            <li><a href="{% url 'index'%}">{% trans 'Home version one' %}</a></li>
-                                            <li><a href="index-2.html">{% trans 'Home version two' %}</a></li>
-                                        </ul>
+                                    <li style="margin-left: 60px;"><a href="{% url 'index'%}">{% trans "Home" %}</a>
                                     </li>
-                                    <li><a href="{% url 'product-list' %}">{% trans "Shop" %}</a>
-                                        <ul class="magamenu">
-                                            <li class="banner"><a href="shop.html"><img src="{% static 'img/maga1.png' %}" alt="" /></a></li>
-                                            {% get_categories as categories %}
-                                            {% for cat in categories%}
-                                            <li><h5>{{cat.title}}’s wear</h5>
-                                                <ul>
-                                                    {% for subcat in cat.parent_category.all %}
-                                                    <li><a href="#">{{subcat.title}}</a></li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                            {% endfor %}
-                                            <li class="banner"><a href="shop.html"><img src="{% static 'img/maga2.png' %}" alt="" /></a></li>
-                                        </ul>
+                                    <li style="margin-left: 60px;"><a href="{% url 'product-list' %}">{% trans "Shop" %}</a>
                                     </li>
-                                    <li><a href="#">{% trans "Pages" %}</a>
-                                        <ul class="dropdown">
-                                            <li><a href="{% url 'product-wishlist'%}">Wishlist</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="product-grid.html">Product Grid View</a></li>
-                                            <li><a href="product-list.html">Product List View</a></li>
-                                            <li><a href="single-product.html">Single Product</a></li>
-                                            <li><a href="error-404.html">404 page</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="{% url 'blogs' %}">{% trans "Blog" %}</a>
+                                    <li style="margin-left: 60px;"><a href="{% url 'blogs' %}">{% trans "Blog" %}</a>
                                         <ul class="dropdown">
                                                 {% get_blogposts as blogpost_list %}
                                                 {% for blog in blogpost_list %}
                                                     {% if blog.is_published %}
-                                                    
                                                     <li><a href="{{blog.get_absolute_url}}">{{blog.category}}</a></li>
                                                     {% endif %}
                                                 {% endfor %}
                                         </ul>
                                     </li>
-                                    <li><a href="{% url 'blog-about'%}">{% trans "About" %}</a></li>
-                                    <li><a href="{% url 'core-contact'%}">{% trans "Contact" %}</a></li>
+                                    <li style="margin-left: 60px;"><a href="{% url 'core-contact'%}">{% trans "Contact" %}</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -153,10 +120,6 @@
                                 <nav id="dropdown">
                                     <ul>
                                         <li><a href="{% url 'index'%}">{% trans "Home" %}</a>
-                                            <ul class="dropdown">
-                                                <li><a href="{% url 'index'%}">Home version one</a></li>
-                                                <li><a href="index-2.html">Home version two</a></li>
-                                            </ul>
                                         </li>
                                         <li><a href="shop.html">{% trans "Shop" %}</a>
                                             <ul>
@@ -206,7 +169,7 @@
                                                 <li><a href="{% url 'blog-single-blog'% }">Single Blog</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="{% url 'blog-about'%}">{% trans "About" %}</a></li>
+                                        <li><a href="{% url 'core-about'%}">{% trans "About" %}</a></li>
                                         <li><a href="{% url 'core-contact'%}">{% trans "Contact" %}</a></li>
                                     </ul>
                                 </nav>
