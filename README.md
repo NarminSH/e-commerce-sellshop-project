@@ -47,6 +47,7 @@ I used Fetch API to send data to backend. Also, celery was used to send emails t
 4. Celery
 5. Redis
 6. Nginx
+7. PostgreSQL
 
 
 
